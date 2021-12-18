@@ -2,23 +2,25 @@ import numpy as np
 
 from numba import njit
 
+
+# TriDiagonal Matrix Algorithm
 @njit(fastmath=True)
 def TDMAsolver(a: np.ndarray, b: np.ndarray, c: np.ndarray, d: np.ndarray) -> np.ndarray:
-    nf = len(d)
-    ac: np.ndarray = a.copy()
-    bc: np.ndarray = b.copy()
-    cc: np.ndarray = c.copy()
-    dc: np.ndarray = d.copy()
+    n = len(d)
+    a_copy: np.ndarray = a.copy()
+    b_copy: np.ndarray = b.copy()
+    c_copy: np.ndarray = c.copy()
+    d_copy: np.ndarray = d.copy()
 
-    for it in range(1, nf):
-        mc = ac[it - 1] / bc[it - 1]
-        bc[it] -= mc * cc[it - 1]
-        dc[it] -= mc * dc[it - 1]
+    for it in range(1, n):
+        xi = a_copy[it - 1] / b_copy[it - 1]
+        b_copy[it] -= xi * c_copy[it - 1]
+        d_copy[it] -= xi * d_copy[it - 1]
 
-    xc: np.ndarray = np.zeros(nf, dtype=d.dtype)
-    xc[-1] = dc[-1] / bc[-1]
+    w: np.ndarray = np.zeros(n, dtype=d.dtype)
+    w[-1] = d_copy[-1] / b_copy[-1]
 
-    for il in range(nf - 2, -1, -1):
-        xc[il] = (dc[il] - cc[il] * xc[il + 1]) / bc[il]
+    for il in range(n - 2, -1, -1):
+        w[il] = (d_copy[il] - c_copy[il] * w[il + 1]) / b_copy[il]
 
-    return xc
+    return w

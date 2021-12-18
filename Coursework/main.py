@@ -1,10 +1,7 @@
-import inline as inline
-import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mpl_toolkits import mplot3d
-from solver import solve_heat2d
+from solverHighBoundaryTemp import solve_heat2d
 
 N, M = 200, 5000
 L = 1
@@ -44,7 +41,7 @@ popt, _ = curve_fit(func, time, center_temperature)
 plt.figure()
 plt.plot(time, center_temperature, label='Original')
 plt.plot(time, np.exp(popt[0] * time), label=f'Fitted with {popt[0]:.2f}')
-# plt.yscale('log')
+plt.yscale('log')
 plt.xlabel('time')
 plt.ylabel('T')
 plt.title('Maximum temperature')

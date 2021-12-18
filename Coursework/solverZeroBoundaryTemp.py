@@ -26,9 +26,6 @@ def solve_heat1d(a: np.ndarray, b: np.ndarray, c: np.ndarray, grid: np.ndarray, 
         vals = grid[i]
         d: np.ndarray = R * np.roll(vals, 1) + R * np.roll(vals, -1) + (1.0 - 2.0 * R) * vals
 
-        # A = get_solution_matrix(a, b, c, d)
-        # solution = np.linalg.solve(A, d)
-
         solution = TDMAsolver(a, b, c, d)
 
         # the boundary temperature is zero
